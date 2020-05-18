@@ -1,12 +1,23 @@
-import { firestore } from "firebase-admin";
+import type {firestore} from 'firebase-admin'; // eslint-disable-line
 
+/**
+ * Helper class for getting and setting cube data.
+ */
 export class Cube {
+  /**
+   *
+   * @param {string} name  cube name
+   * @param {string} price  cube price
+   * @param {string} link  link to the cube
+   */
   constructor(
     readonly name: string,
     readonly price: string,
-    readonly link: string
+    readonly link: string,
   ) {}
-
+  /**
+    * @return {string} identificator
+    */
   toString(): string {
     return this.link;
   }
