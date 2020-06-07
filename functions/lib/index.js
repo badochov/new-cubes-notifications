@@ -6,6 +6,7 @@ const nodemailer_1 = require("nodemailer");
 const $ = require("cheerio");
 const Cube_1 = require("./Cube");
 const admin = require("firebase-admin");
+const node_fetch_1 = require("node-fetch");
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const gmailEmail = functions.config().gmail.email;
@@ -50,7 +51,7 @@ exports.sendEmailOnCreation = functions.firestore
 });
 const getCubes = async () => {
     try {
-        const site = await fetch('http://www.ziicube.com/');
+        const site = await node_fetch_1.default('http://www.ziicube.com/');
         const html = await site.text();
         const cubesCheerioObjs = $('.txt', html);
         const cubes = [];
