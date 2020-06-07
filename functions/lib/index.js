@@ -11,14 +11,14 @@ const db = admin.firestore();
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
 const mailTransport = nodemailer_1.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
         user: gmailEmail,
         pass: gmailPassword,
     },
 });
-const APP_NAME = "New Cubes Notifications";
-const sendEmail = async (emails, text, subject = "New Cube") => {
+const APP_NAME = 'New Cubes Notifications';
+const sendEmail = async (emails, text, subject = 'New Cube') => {
     try {
         const mailOptions = {
             from: `${APP_NAME} <${gmailEmail}>`,
@@ -27,20 +27,20 @@ const sendEmail = async (emails, text, subject = "New Cube") => {
             text: text,
         };
         await mailTransport.sendMail(mailOptions);
-        console.log("New cube email sent to:", emails);
+        console.log('New cube email sent to:', emails);
     }
     catch (e) { }
 };
 const getEmailsAdresses = async () => {
     const emails = [];
-    const emailColl = await db.collection("mails").get();
+    const emailColl = await db.collection('mails').get();
     emailColl.forEach((doc) => {
         emails.push(doc.data().mail);
     });
     return emails;
 };
 exports.sendEmailOnCreation = functions.firestore
-    .document("cubes/{cubeid}")
+    .document('cubes/{cubeid}')
     .onCreate(async (snap, _) => {
     const emails = await getEmailsAdresses();
     const data = snap.data();
@@ -50,12 +50,12 @@ exports.sendEmailOnCreation = functions.firestore
 });
 const getCubes = async () => {
     try {
-        const site = await fetch("http://www.ziicube.com/");
+        const site = await fetch('http://www.ziicube.com/');
         const html = await site.text();
-        const cubesCheerioObjs = $(".txt", html);
+        const cubesCheerioObjs = $('.txt', html);
         const cubes = [];
         cubesCheerioObjs.each((_, cube) => {
-            const price = $(".price", cube)[0].firstChild.data;
+            const price = $('.price', cube)[0].firstChild.data;
             const namePart = cube.children[3].children[0];
             const link = namePart.attribs.href;
             const name = namePart.firstChild.data;
@@ -71,13 +71,13 @@ const getCubes = async () => {
     }
 };
 const sanitizeDocName = (name) => {
-    return name.replace(/\//g, "\\");
+    return name.replace(/\//g, '\\');
 };
 const cubesHandler = async () => {
     try {
-        console.log("Trying to get cubes");
+        console.log('Trying to get cubes');
         const cubes = await getCubes();
-        const cubesCollection = db.collection("cubes");
+        const cubesCollection = db.collection('cubes');
         console.log(cubes);
         for (const cube of cubes) {
             const doc = cubesCollection.doc(sanitizeDocName(cube.toString()));
@@ -101,7 +101,7 @@ exports.cubeTest = functions.https.onRequest(async (req, res) => {
     res.send(cubes);
 });
 exports.scheduledFunctionPlainEnglish = functions.pubsub
-    .schedule("every 30 minutes")
+    .schedule('every 30 minutes')
     .onRun(async (context) => {
     await cubesHandler();
 });

@@ -1,12 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cubeConverter = exports.Cube = void 0;
+/**
+ * Helper class for getting and setting cube data.
+ */
 class Cube {
+    /**
+     *
+     * @param {string} name  cube name
+     * @param {string} price  cube price
+     * @param {string} link  link to the cube
+     */
     constructor(name, price, link) {
         this.name = name;
         this.price = price;
         this.link = link;
     }
+    /**
+      * @return {string} identificator
+      */
     toString() {
         return this.link;
     }

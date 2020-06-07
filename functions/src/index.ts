@@ -3,6 +3,7 @@ import {createTransport} from 'nodemailer';
 import * as $ from 'cheerio';
 import {Cube, cubeConverter} from './Cube';
 import * as admin from 'firebase-admin';
+import fetch from 'node-fetch';
 
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
